@@ -1,8 +1,5 @@
 using FluentValidation;
 using FluentvalidationToJsonSchema;
-using Xunit;
-using System.Text.Json;
-using System;
 
 namespace UnitTests
 {
@@ -42,7 +39,7 @@ namespace UnitTests
         public class EnumModel { public TestEnum Value { get; set; } }
         public class MaxMinLengthModel { public string Text { get; set; } }
         public class GreaterLessModel { public int Number { get; set; } }
-        public class LengthModel { public string Text { get; set; } }
+        public class LengthModel { public string Text { get; set; } } 
 
         public class EnumModelValidator : AbstractValidator<EnumModel>
         {
@@ -175,11 +172,7 @@ namespace UnitTests
             var validator = new TestModelValidator();
             var converter = new FluentValidatorToJsonSchemaConverter();
             var schema = converter.ConvertTo(validator);
-            var json = JsonSerializer.Serialize(schema, new JsonSerializerOptions {
-                WriteIndented = true,
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
-            });
+            var json = converter.ConvertToJson(validator);
             System.Diagnostics.Debug.WriteLine(json);
             Console.WriteLine(json);
 
